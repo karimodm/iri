@@ -3,6 +3,7 @@ package com.iota.iri;
 import java.util.List;
 import java.util.Map;
 
+import com.iota.iri.controllers.MilestoneViewModel;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -176,7 +177,16 @@ public class Iota {
         tangle.init();
 
         if (configuration.isRescanDb()) {
-            rescanDb();
+            log.info("Instead of Rescanning let's enumerate Milestones starting from 1050001");
+            for (int milestoneIndex = 1050001; milestoneIndex < 1272480; milestoneIndex++) {
+                MilestoneViewModel m = MilestoneViewModel.get(tangle, milestoneIndex);
+                TransactionViewModel t = TransactionViewModel.fromHash(tangle, m.getHash());
+                String fewTrytes = t.toString().substring(0, 50);
+                log.info("I ", milestoneIndex);
+                log.info("\tH ", m.getHash().toString());
+                log.info("\tT ", fewTrytes);
+            }
+            System.exit(0);
         }
 
         if (configuration.isRevalidate()) {
