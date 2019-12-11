@@ -182,10 +182,9 @@ public class Iota {
             for (int milestoneIndex = 1050001; milestoneIndex < 1272480; milestoneIndex++) {
                 MilestoneViewModel m = MilestoneViewModel.get(tangle, milestoneIndex);
                 TransactionViewModel t = TransactionViewModel.fromHash(tangle, m.getHash());
-                String fewTrytes = Converter.trytes(t.trits()).substring(0, 50);
                 log.info("I " + String.valueOf(milestoneIndex));
                 log.info("\tH " + m.getHash().toString());
-                log.info("\tT " + fewTrytes);
+                log.info("\tT " + Converter.trytes(t.trits()));
             }
             System.exit(0);
         }
