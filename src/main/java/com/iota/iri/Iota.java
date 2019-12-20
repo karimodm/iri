@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.rocksdb.RocksDB;
+import org.rocksdb.RocksDBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,11 +171,24 @@ public class Iota {
      * @throws Exception If along the way a service fails to initialize. Most common cause is a file read or database
      *                   error.
      */
+    private void validateChecksums() throws RocksDBException {
+        log.info("Validating persistance providers length " + String.valueOf(tangle.getPersistenceProviders().size()));
+        for (PersistenceProvider pp : tangle.getPersistenceProviders()) {
+            log.info(pp.toString());
+            RocksDB db = pp.getDb();
+            log.info("Validating checksum of " + db.toString());
+            db.verifyChecksum();
+            log.info("Done validating checksum of " + db.toString());
+        }
+    }
     public void init() throws Exception {
         initDependencies(); // remainder of injectDependencies method (contained init code)
 
         initializeTangle();
         tangle.init();
+
+        log.info("BEFORE RESCAN OR REVALIDATE");
+        validateChecksums();
 
         if (configuration.isRescanDb()) {
             rescanDb();
@@ -183,6 +198,8 @@ public class Iota {
             tangle.clearColumn(com.iota.iri.model.persistables.Milestone.class);
             tangle.clearColumn(com.iota.iri.model.StateDiff.class);
             tangle.clearMetadata(com.iota.iri.model.persistables.Transaction.class);
+            log.info("AFTER DROPPING");
+            validateChecksums();
         }
 
         transactionValidator.init();

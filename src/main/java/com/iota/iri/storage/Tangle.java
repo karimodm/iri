@@ -41,7 +41,11 @@ public class Tangle {
     public static final Map.Entry<String, Class<? extends Persistable>> METADATA_COLUMN_FAMILY =
             new AbstractMap.SimpleImmutableEntry<>("transaction-metadata", Transaction.class);
 
-    private final List<PersistenceProvider> persistenceProviders = new ArrayList<>();
+  public List<PersistenceProvider> getPersistenceProviders() {
+    return persistenceProviders;
+  }
+
+  private final List<PersistenceProvider> persistenceProviders = new ArrayList<>();
     private final List<MessageQueueProvider> messageQueueProviders = new ArrayList<>();
 
     public void addPersistenceProvider(PersistenceProvider provider) {

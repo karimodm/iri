@@ -75,6 +75,10 @@ public class RocksDBPersistenceProvider implements PersistenceProvider {
     private Map<Class<?>, ColumnFamilyHandle> classTreeMap;
     private Map<Class<?>, ColumnFamilyHandle> metadataReference = Collections.emptyMap();
 
+    public RocksDB getDb() {
+        return db;
+    }
+
     private RocksDB db;
     // DBOptions is only used in initDB(). However, it is closeable - so we keep a reference for shutdown.
     private DBOptions options;

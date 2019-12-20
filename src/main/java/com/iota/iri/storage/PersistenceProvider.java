@@ -1,6 +1,7 @@
 package com.iota.iri.storage;
 
 import com.iota.iri.utils.Pair;
+import org.rocksdb.RocksDB;
 
 import java.util.Collection;
 import java.util.List;
@@ -196,4 +197,6 @@ public interface PersistenceProvider {
     void clearMetadata(Class<?> column) throws Exception;
 
     List<byte[]> loadAllKeysFromTable(Class<? extends Persistable> model);
+
+    public RocksDB getDb();
 }
