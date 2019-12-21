@@ -196,9 +196,13 @@ public class Iota {
 
         if (configuration.isRevalidate()) {
             tangle.clearColumn(com.iota.iri.model.persistables.Milestone.class);
+            log.info("After dropping Milestone.class");
+            validateChecksums();
             tangle.clearColumn(com.iota.iri.model.StateDiff.class);
+            log.info("After dropping Statediff.class");
+            validateChecksums();
             tangle.clearMetadata(com.iota.iri.model.persistables.Transaction.class);
-            log.info("AFTER DROPPING");
+            log.info("AFTER DROPPING ALL");
             validateChecksums();
         }
 
